@@ -1,11 +1,17 @@
 // const functions = require('firebase-functions');
 const express = require("express");
 const axios = require("axios");
-const cors = require('cors');
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+  origin: ["http://localhost:3003", "https://call-record-form-92dac.web.app"],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -32,6 +38,10 @@ app.get("/api/notion-data", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+// ローカル環境で動作確認したい場合はコメントアウトを外すとサーバーが立ち上がる
+// const PORT = process.env.PORT || 3005;
+// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 module.exports = app;
 
