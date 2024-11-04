@@ -15,8 +15,8 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/api/notion-data", async (req, res) => {
-  const databaseId = "13482b75468c805d9a4cf67c7112365a";
+app.get("/api/notion-data/sales-employees", async (req, res) => {
+  const databaseId = "13482b75468c80ec878aec03efd68241"; // 本来であれば定数化するのが好ましい、、、
 
   try {
     const response = await axios({
