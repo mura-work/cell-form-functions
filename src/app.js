@@ -25,8 +25,8 @@ app.use((err, req, res, next) => {
 });
 
 // ローカル環境で動作確認したい場合はコメントアウトを外すとサーバーが立ち上がる
-const PORT = process.env.PORT || 3005;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// const PORT = process.env.PORT || 3005;
+// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 module.exports = app;
 
