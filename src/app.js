@@ -125,7 +125,10 @@ app.post("/api/notion-data/shift-management", async (req, res) => {
 
   const dateValues = convertedShifts.map((value) => {
     return {
-      parent: { database_id: process.env.REACT_APP_NOTION_DB_ENDPOINT_ID },
+      parent: {
+        database_id:
+          process.env.REACT_APP_NOTION_HOME_WORKER_SHIFT_DB_ENDPOINT_ID,
+      },
       properties: {
         名前: {
           title: [
@@ -158,12 +161,11 @@ app.post("/api/notion-data/shift-management", async (req, res) => {
   });
 
   try {
-    const NOTION_API_URL = "https://api.notion.com/v1/pages";
     await Promise.all(
       dateValues.map(async (dateValue) => {
-        await axios.post(NOTION_API_URL, dateValue, {
+        await axios.post(process.env.REACT_APP_NOTION_API_URL, dateValue, {
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_NOTION_SHIFT_DB_API_TOKEN}`,
+            Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
             "Content-Type": "application/json",
             "Notion-Version": "2022-06-28", // Notion APIバージョン
           },
@@ -177,9 +179,140 @@ app.post("/api/notion-data/shift-management", async (req, res) => {
   res.json({ message: "Success" });
 });
 
+app.post("/api/notion-data/register-new-home-worker", async (req, res) => {
+  const newHomeWorkerValue = req.body.newHomeWorkerValue;
+
+  const requestParams = {
+    parent: {
+      database_id:
+        process.env.REACT_APP_NOTION_HOME_WORKER_MANAGEMENT_DB_ENDPOINT_ID,
+    },
+    properties: {
+      名前: {
+        rich_text: [
+          {
+            type: "text",
+            text: { content: newHomeWorkerValue.name },
+          },
+        ],
+      },
+      "名前（カナ）": {
+        rich_text: [
+          {
+            type: "text",
+            text: { content: newHomeWorkerValue.nameKana },
+          },
+        ],
+      },
+      個人メールアドレス: {
+        rich_text: [
+          {
+            type: "text",
+            text: { content: newHomeWorkerValue.personalAddress },
+          },
+        ],
+      },
+      個人電話番号: {
+        rich_text: [
+          {
+            type: "text",
+            text: { content: newHomeWorkerValue.phoneNumber },
+          },
+        ],
+      },
+      振込先銀行名: {
+        rich_text: [
+          {
+            type: "text",
+            text: { content: newHomeWorkerValue.bankName },
+          },
+        ],
+      },
+      振込先支店名: {
+        rich_text: [
+          {
+            type: "text",
+            text: { content: newHomeWorkerValue.branchName },
+          },
+        ],
+      },
+      振込先口座種別: {
+        select: {
+          name: newHomeWorkerValue.accountType,
+        },
+      },
+      口座番号: {
+        rich_text: [
+          {
+            type: "text",
+            text: { content: newHomeWorkerValue.accountNumber },
+          },
+        ],
+      },
+      口座名義人: {
+        rich_text: [
+          {
+            type: "text",
+            text: { content: newHomeWorkerValue.accountHolder },
+          },
+        ],
+      },
+      生年月日: {
+        rich_text: [
+          {
+            type: "text",
+            text: { content: newHomeWorkerValue.birthday },
+          },
+        ],
+      },
+      住民票所在地: {
+        rich_text: [
+          {
+            type: "text",
+            text: { content: newHomeWorkerValue.address },
+          },
+        ],
+      },
+      住まい住所: {
+        rich_text: [
+          {
+            type: "text",
+            text: { content: newHomeWorkerValue.home },
+          },
+        ],
+      },
+      最短勤務可能日: {
+        date: { start: newHomeWorkerValue.earliestStartDate },
+      },
+      "稼働想定時間（月）": {
+        number: newHomeWorkerValue.estimatedWorkingHoursPerMonth,
+      },
+    },
+  };
+
+  try {
+    await axios.post(process.env.REACT_APP_NOTION_API_URL, requestParams, {
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
+        "Content-Type": "application/json",
+        "Notion-Version": "2022-06-28", // Notion APIバージョン
+      },
+    });
+    res.json({ message: "Success" });
+  } catch (e) {
+    console.error(e);
+
+    // エラー時のレスポンス
+    res.status(error.response?.status || 500).json({
+      message: "Failed to send data to Notion.",
+      error: error.response?.data || "An unexpected error occurred.",
+    });
+  }
+});
+
 // ローカル環境で動作確認したい場合はコメントアウトを外すとサーバーが立ち上がる
-// const PORT = process.env.PORT || 3005;
-// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 3005;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 module.exports = app;
 
