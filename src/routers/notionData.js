@@ -3,7 +3,33 @@ const router = express.Router();
 const notionDataController = require("../controllers/notionDataController");
 const workAttendanceController = require("../controllers/workAttendanceController");
 const workShiftController = require("../controllers/workShiftController");
+const homeWorkerController = require("../controllers/homeWorkerController");
 
+/** シフト関連 */
+// シフト管理DBのデータを一覧で取得
+router.get("/work-shifts", workShiftController.getShiftManagements);
+
+// シフト管理DBに保存する
+router.post("/shift-management", workShiftController.postShiftManagement);
+
+/** 在宅ワーカー関連 */
+// 在宅ワーカーの取得
+router.get("/home-workers", homeWorkerController.getHomeWorkers);
+
+// 在宅ワーカーをDBに登録する
+router.post(
+  "/register-new-home-worker",
+  homeWorkerController.postRegisterNewHomeWorker
+);
+
+/** 勤怠関連 */
+// 勤怠管理DBのデータを一覧で取得
+router.get("/work-attendances", workAttendanceController.getWorkAttendances);
+
+// 勤務情報を登録する
+router.post("/work-attendance", workAttendanceController.postWorkAttendance);
+
+/** 使ってないかも */
 // 法人名（法人番号）の取得
 router.get("client-companies", notionDataController.getClientCompanies);
 
@@ -12,26 +38,5 @@ router.get("/sales-employees", notionDataController.getSalesEmployees);
 
 // 商品の取得
 router.get("/products", notionDataController.getProducts);
-
-// シフト管理DBのデータを一覧で取得
-router.get("/work-shifts", workShiftController.getShiftManagements);
-
-// シフト管理DBに保存する
-router.post("/shift-management", workShiftController.postShiftManagement);
-
-// 在宅ワーカーの取得
-router.get("/home-workers", notionDataController.getHomeWorkers);
-
-// 在宅ワーカーをDBに登録する
-router.post(
-  "/register-new-home-worker",
-  notionDataController.postRegisterNewHomeWorker
-);
-
-// 勤怠管理DBのデータを一覧で取得
-router.get("/work-attendances", workAttendanceController.getWorkAttendances);
-
-// 勤務情報を登録する
-router.post("/work-attendance", workAttendanceController.postWorkAttendance);
 
 module.exports = router;
