@@ -14,7 +14,7 @@ router.get("/sales-employees", notionDataController.getSalesEmployees);
 router.get("/products", notionDataController.getProducts);
 
 // シフト管理DBのデータを一覧で取得
-router.get("/shift-managements", workShiftController.getShiftManagements);
+router.get("/work-shifts", workShiftController.getShiftManagements);
 
 // シフト管理DBに保存する
 router.post("/shift-management", workShiftController.postShiftManagement);

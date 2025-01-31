@@ -11,8 +11,8 @@ exports.getShiftManagements = async (req, res) => {
       {
         sorts: [
           {
-            property: "登録日",
-            direction: "ascending",
+            property: "勤務開始時間",
+            direction: "descending",
           },
         ],
       },
