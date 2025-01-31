@@ -25,7 +25,17 @@ exports.getShiftManagements = async (req, res) => {
       }
     );
 
-    res.json(response.data);
+    const results = response.data.results.map((result) => {
+      return {
+        id: result.id,
+        name: result.properties.名前.title[0].text.content, // 名前
+        startTime: result.properties.勤務開始時間.date.start, // 勤務開始時間
+        endTime: result.properties.勤務終了時間.date.start, // 勤務終了時間
+        createdAt: result.properties.登録日.created_time, // 登録日
+      };
+    });
+
+    res.json(results);
   } catch (error) {
     console.error(
       "Error querying Notion database:",
