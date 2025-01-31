@@ -171,13 +171,20 @@ exports.postRegisterNewHomeWorker = async (req, res) => {
     };
 
     // 在宅ワーカー管理DBに登録
-    await axios.post(process.env.REACT_APP_NOTION_API_URL, requestParams, {
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
-        "Content-Type": "application/json",
-        "Notion-Version": "2022-06-28", // Notion APIバージョン
-      },
-    });
+    const homeWorkerData = await axios.post(
+      process.env.REACT_APP_NOTION_API_URL,
+      requestParams,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
+          "Content-Type": "application/json",
+          "Notion-Version": "2022-06-28", // Notion APIバージョン
+        },
+      }
+    );
+
+    // 表示用のメンバーID (ZW-1, ZW-2, ...) を生成
+    const workerId = `ZW-${homeWorkerCount + 1}`;
 
     // メンバー用DBに登録
     const memberRequestParams = {
@@ -189,7 +196,7 @@ exports.postRegisterNewHomeWorker = async (req, res) => {
         メンバーID: {
           title: [
             {
-              text: { content: `ZW-${homeWorkerCount + 1}` },
+              text: { content: workerId },
             },
           ],
         },
@@ -214,10 +221,43 @@ exports.postRegisterNewHomeWorker = async (req, res) => {
         headers: {
           Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
           "Content-Type": "application/json",
-          "Notion-Version": "2022-06-28", // Notion APIバージョン
+          "Notion-Version": "2022-06-28",
         },
       }
     );
+
+    const hourlyWageParams = {
+      parent: {
+        database_id:
+          process.env.REACT_APP_NOTION_HOME_WORKER_HOURLY_WAGE_DB_ENDPOINT_ID,
+      },
+      properties: {
+        名前: {
+          title: [
+            {
+              text: { content: newHomeWorkerValue.name },
+            },
+          ],
+        },
+        メンバー管理DB: {
+          relation: [{ id: homeWorkerData.data.id }],
+        },
+        時給: {
+          select: {
+            name: "1300", // 一旦固定値
+          },
+        },
+      },
+    };
+
+    // 時給DBにデータを登録
+    await axios.post(process.env.REACT_APP_NOTION_API_URL, hourlyWageParams, {
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
+        "Content-Type": "application/json",
+        "Notion-Version": "2022-06-28", // Notion APIバージョン
+      },
+    });
 
     res.json({ message: "Success" });
   } catch (e) {
