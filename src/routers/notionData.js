@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const notionDataController = require("../controllers/notionDataController");
+const workAttendanceController = require("../controllers/workAttendanceController");
 
 // 法人名（法人番号）の取得
 router.get("client-companies", notionDataController.getClientCompanies);
@@ -22,5 +23,8 @@ router.post(
   "/register-new-home-worker",
   notionDataController.postRegisterNewHomeWorker
 );
+
+// 勤務情報を登録する
+router.post("/work-attendance", workAttendanceController.postWorkAttendance);
 
 module.exports = router;
