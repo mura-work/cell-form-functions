@@ -28,6 +28,14 @@ app.use((err, req, res, next) => {
 // const PORT = process.env.PORT || 3005;
 // app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
+// 環境変数に応じてサーバーを起動
+if (process.env.NODE_ENV === "dev") {
+  const PORT = process.env.PORT || 3005;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
 module.exports = app;
 
 // Cloud Functions用

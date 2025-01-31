@@ -13,7 +13,7 @@
     "nodemon": "^3.1.7"
   },
   "scripts": {
-    "start": "PORT=3005 node src/app.js",
+    "start": "PORT=3005 NODE_ENV=dev node src/app.js",
     "dev": "nodemon src/app.js"
   }
 }
