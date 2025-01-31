@@ -24,10 +24,6 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Something went wrong!" });
 });
 
-// ローカル環境で動作確認したい場合はコメントアウトを外すとサーバーが立ち上がる
-// const PORT = process.env.PORT || 3005;
-// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
 // 環境変数に応じてサーバーを起動
 if (process.env.NODE_ENV === "dev") {
   const PORT = process.env.PORT || 3005;

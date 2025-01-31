@@ -1,5 +1,40 @@
 const axios = require("axios");
 
+// シフト管理DBのデータを一覧で取得
+exports.getShiftManagements = async (req, res) => {
+  const databaseId =
+    process.env.REACT_APP_NOTION_HOME_WORKER_SHIFT_DB_ENDPOINT_ID;
+
+  try {
+    const response = await axios.post(
+      `https://api.notion.com/v1/databases/${databaseId}/query`,
+      {
+        sorts: [
+          {
+            property: "登録日",
+            direction: "ascending",
+          },
+        ],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
+          "Notion-Version": "2022-06-28",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    console.error(
+      "Error querying Notion database:",
+      error.response ? error.response.data : error.message
+    );
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 // シフト管理DBに保存する
 exports.postShiftManagement = async (req, res) => {
   const shiftRequestValues = req.body.shiftRequestValues;

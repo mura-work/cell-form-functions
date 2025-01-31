@@ -13,6 +13,9 @@ router.get("/sales-employees", notionDataController.getSalesEmployees);
 // 商品の取得
 router.get("/products", notionDataController.getProducts);
 
+// シフト管理DBのデータを一覧で取得
+router.get("/shift-managements", workShiftController.getShiftManagements);
+
 // シフト管理DBに保存する
 router.post("/shift-management", workShiftController.postShiftManagement);
 
@@ -24,6 +27,9 @@ router.post(
   "/register-new-home-worker",
   notionDataController.postRegisterNewHomeWorker
 );
+
+// 勤怠管理DBのデータを一覧で取得
+router.get("/work-attendances", workAttendanceController.getWorkAttendances);
 
 // 勤務情報を登録する
 router.post("/work-attendance", workAttendanceController.postWorkAttendance);
