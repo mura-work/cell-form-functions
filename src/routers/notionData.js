@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const notionDataController = require("../controllers/notionDataController");
 const workAttendanceController = require("../controllers/workAttendanceController");
+const workShiftController = require("../controllers/workShiftController");
 
 // 法人名（法人番号）の取得
 router.get("client-companies", notionDataController.getClientCompanies);
@@ -13,7 +14,7 @@ router.get("/sales-employees", notionDataController.getSalesEmployees);
 router.get("/products", notionDataController.getProducts);
 
 // シフト管理DBに保存する
-router.post("/shift-management", notionDataController.postShiftManagement);
+router.post("/shift-management", workShiftController.postShiftManagement);
 
 // 在宅ワーカーの取得
 router.get("/home-workers", notionDataController.getHomeWorkers);
