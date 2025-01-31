@@ -25,9 +25,11 @@ exports.getWorkAttendances = async (req, res) => {
     const results = workAttendances.data.results.map((result) => {
       return {
         id: result.id,
+        memberId: result.properties.メンバーID.relation[0].id, // メンバーID
+        memberName:
+          result.properties.名前.rollup.array[0].rich_text[0].text.content, // メンバー名
         workDate: result.properties.勤務日.title[0].text.content, // 勤務日
         workTimes: result.properties.勤務時刻.rich_text[0].text.content, // 勤務時刻
-        memberId: result.properties.メンバーID.relation[0].id, // メンバーID
         workingTime: result.properties["勤務時間(m)"].number, // 勤務時間
         workingTimeHour: result.properties["勤務時間(h)"].number, // 勤務時間
         restTime: result.properties["休憩時間(m)"].number, // 休憩時間
