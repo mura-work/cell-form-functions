@@ -251,13 +251,68 @@ exports.postRegisterNewHomeWorker = async (req, res) => {
     };
 
     // 時給DBにデータを登録
-    await axios.post(process.env.REACT_APP_NOTION_API_URL, hourlyWageParams, {
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
-        "Content-Type": "application/json",
-        "Notion-Version": "2022-06-28", // Notion APIバージョン
+    const hourlyWageData = await axios.post(
+      process.env.REACT_APP_NOTION_API_URL,
+      hourlyWageParams,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
+          "Content-Type": "application/json",
+          "Notion-Version": "2022-06-28",
+        },
+      }
+    );
+
+    // 今日の日付から{yyyyy-mm}の形式に変換
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const yearMonth = `${year}-${month.toString().padStart(2, "0")}`;
+
+    const payrollManagementParams = {
+      parent: {
+        database_id:
+          process.env.REACT_APP_NOTION_HOME_WORK_PAY_MANAGEMENT_DB_ENDPOINT_ID,
       },
-    });
+      properties: {
+        給与月: {
+          title: [
+            {
+              text: { content: `${newHomeWorkerValue.name}-${yearMonth}` },
+            },
+          ],
+        },
+        勤務月: {
+          rich_text: [
+            {
+              type: "text",
+              text: {
+                content: yearMonth,
+              },
+            },
+          ],
+        },
+        メンバーDB: {
+          relation: [{ id: homeWorkerData.data.id }],
+        },
+        時給マスタ: {
+          relation: [{ id: hourlyWageData.data.id }],
+        },
+      },
+    };
+
+    // 当月分のデータをの給与管理DBに登録
+    await axios.post(
+      process.env.REACT_APP_NOTION_API_URL,
+      payrollManagementParams,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
+          "Content-Type": "application/json",
+          "Notion-Version": "2022-06-28",
+        },
+      }
+    );
 
     res.json({ message: "Success" });
   } catch (e) {

@@ -55,7 +55,7 @@ exports.postWorkAttendance = async (req, res) => {
       `https://api.notion.com/v1/databases/${process.env.REACT_APP_NOTION_HOME_WORK_PAY_MANAGEMENT_DB_ENDPOINT_ID}/query`,
       {
         filter: {
-          property: "名前",
+          property: "給与月",
           title: {
             equals: workAttendance.relationMemberData,
           },
