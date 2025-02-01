@@ -64,7 +64,7 @@ exports.postRegisterNewHomeWorker = async (req, res) => {
         メンバーID: {
           title: [
             {
-              text: { content: `ZW-${homeWorkerCount + 1}` },
+              text: { content: `RS-${homeWorkerCount + 1}` },
             },
           ],
         },
@@ -183,8 +183,8 @@ exports.postRegisterNewHomeWorker = async (req, res) => {
       }
     );
 
-    // 表示用のメンバーID (ZW-1, ZW-2, ...) を生成
-    const workerId = `ZW-${homeWorkerCount + 1}`;
+    // 表示用のメンバーID (RS-1, RS-2, ...) を生成
+    const workerId = `RS-${homeWorkerCount + 1}`;
 
     // メンバー用DBに登録
     const memberRequestParams = {
