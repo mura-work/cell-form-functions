@@ -1,4 +1,20 @@
+const dayjs = require("dayjs");
+const utc = require("dayjs/plugin/utc");
+const timezone = require("dayjs/plugin/timezone");
 const axios = require("axios");
+
+// プラグインの初期化
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+/**
+ * 入力形式 "YYYY-MM-DD HH:mm" の文字列に対して、Asia/Tokyo のタイムゾーンを付与して ISO8601 形式に変換
+ * @param dateStr - "YYYY-MM-DD HH:mm" 形式の日時文字列
+ * @returns タイムゾーン付き ISO8601 形式の文字列
+ */
+const addTimezoneWithDayjs = (dateStr) => {
+  return dayjs.tz(dateStr, "YYYY-MM-DD HH:mm", "Asia/Tokyo").format();
+};
 
 // シフト管理DBのデータを一覧で取得
 exports.getShiftManagements = async (req, res) => {
@@ -52,8 +68,8 @@ exports.postShiftManagement = async (req, res) => {
   const convertedShifts = shiftRequestValues.map(
     ({ date, startTime, endTime }) => {
       // "2025-01-01 09:00" などに結合して返す
-      const startAt = `${date} ${startTime}`;
-      const endAt = `${date} ${endTime}`;
+      const startAt = addTimezoneWithDayjs(`${date} ${startTime}`);
+      const endAt = addTimezoneWithDayjs(`${date} ${endTime}`);
 
       // 差分をミリ秒で計算
       const diffMilliseconds = Math.abs(
