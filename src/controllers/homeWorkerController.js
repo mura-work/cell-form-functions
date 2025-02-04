@@ -38,10 +38,17 @@ exports.getHomeWorkers = async (_, res) => {
 // 在宅ワーカーをDBに登録する
 exports.postRegisterNewHomeWorker = async (req, res) => {
   try {
-    // 在宅ワーカーの人数を取得
+    // 在宅ワーカーを降順で取得
     const response = await axios.post(
       `https://api.notion.com/v1/databases/${process.env.REACT_APP_NOTION_HOME_WORKER_MANAGEMENT_DB_ENDPOINT_ID}/query`,
-      {},
+      {
+        sorts: [
+          {
+            property: "メンバーID",
+            direction: "descending",
+          },
+        ],
+      },
       {
         headers: {
           Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
@@ -51,7 +58,14 @@ exports.postRegisterNewHomeWorker = async (req, res) => {
       }
     );
 
-    const homeWorkerCount = response.data.results.length;
+    const extractIdPart = (id) => {
+      // /^RS-(.+)$/ は「RS-」に続く任意の文字列をキャプチャします
+      const match = id.match(/^RS-(.+)$/);
+      return match ? match[1] : null;
+    };
+    const id =
+      response.data.results[0].properties["メンバーID"].title[0].text.content;
+    const lastHomeWorkerNum = Number(extractIdPart(id));
 
     const newHomeWorkerValue = req.body.newHomeWorkerValue;
 
@@ -64,7 +78,7 @@ exports.postRegisterNewHomeWorker = async (req, res) => {
         メンバーID: {
           title: [
             {
-              text: { content: `RS-${homeWorkerCount + 1}` },
+              text: { content: `RS-${lastHomeWorkerNum + 1}` },
             },
           ],
         },
@@ -184,7 +198,7 @@ exports.postRegisterNewHomeWorker = async (req, res) => {
     );
 
     // 表示用のメンバーID (RS-1, RS-2, ...) を生成
-    const workerId = `RS-${homeWorkerCount + 1}`;
+    const workerId = `RS-${lastHomeWorkerNum + 1}`;
 
     // メンバー用DBに登録
     const memberRequestParams = {
