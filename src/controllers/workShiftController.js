@@ -21,17 +21,30 @@ exports.getShiftManagements = async (req, res) => {
   const databaseId =
     process.env.REACT_APP_NOTION_HOME_WORKER_SHIFT_DB_ENDPOINT_ID;
 
+  const memberId = req.query.memberId;
+
+  const body = {
+    sorts: [
+      {
+        property: "勤務開始時間",
+        direction: "descending",
+      },
+    ],
+  };
+
+  if (memberId) {
+    body.filter = {
+      property: "メンバーID",
+      rich_text: {
+        equals: memberId,
+      },
+    };
+  }
+
   try {
     const response = await axios.post(
       `https://api.notion.com/v1/databases/${databaseId}/query`,
-      {
-        sorts: [
-          {
-            property: "勤務開始時間",
-            direction: "descending",
-          },
-        ],
-      },
+      body,
       {
         headers: {
           Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
@@ -44,6 +57,7 @@ exports.getShiftManagements = async (req, res) => {
     const results = response.data.results.map((result) => {
       return {
         id: result.id,
+        memberId: memberId, // メンバーID
         name: result.properties.名前.title[0].text.content, // 名前
         startTime: result.properties.勤務開始時間.date.start, // 勤務開始時間
         endTime: result.properties.勤務終了時間.date.start, // 勤務終了時間
@@ -65,6 +79,7 @@ exports.getShiftManagements = async (req, res) => {
 exports.postShiftManagement = async (req, res) => {
   const shiftRequestValues = req.body.shiftRequestValues;
   const homeWorkerName = req.body.homeWorkerName;
+  const memberId = req.body.memberId;
   const convertedShifts = shiftRequestValues.map(
     ({ date, startTime, endTime }) => {
       // "2025-01-01 09:00" などに結合して返す
@@ -101,6 +116,16 @@ exports.postShiftManagement = async (req, res) => {
           process.env.REACT_APP_NOTION_HOME_WORKER_SHIFT_DB_ENDPOINT_ID,
       },
       properties: {
+        メンバーID: {
+          rich_text: [
+            {
+              type: "text",
+              text: {
+                content: memberId,
+              },
+            },
+          ],
+        },
         名前: {
           title: [
             {
