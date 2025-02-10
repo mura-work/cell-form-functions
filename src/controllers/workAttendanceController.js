@@ -2,17 +2,30 @@ const axios = require("axios");
 
 // 勤怠管理DBのデータを一覧で取得
 exports.getWorkAttendances = async (req, res) => {
+  const id = req.query.id;
+
+  const body = {
+    sorts: [
+      {
+        property: "登録日",
+        direction: "descending",
+      },
+    ],
+  };
+
+  if (id) {
+    body.filter = {
+      property: "メンバーID",
+      relation: {
+        contains: id,
+      },
+    };
+  }
+
   try {
     const workAttendances = await axios.post(
       `https://api.notion.com/v1/databases/${process.env.REACT_APP_NOTION_HOME_WORK_ATTENDANCE_DB_ENDPOINT_ID}/query`,
-      {
-        sorts: [
-          {
-            property: "登録日",
-            direction: "descending",
-          },
-        ],
-      },
+      body,
       {
         headers: {
           Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
