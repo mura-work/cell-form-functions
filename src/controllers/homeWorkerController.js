@@ -63,6 +63,10 @@ exports.getHomeWorkerDetail = async (req, res) => {
       }
     );
 
+    if (response.data.results.length === 0) {
+      return res.json(null);
+    }
+
     const properties = response.data.results[0].properties;
 
     const result = {
