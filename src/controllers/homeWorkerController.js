@@ -71,6 +71,7 @@ exports.getHomeWorkerDetail = async (req, res) => {
       name: properties.名前.rich_text[0].text.content,
       nameKana: properties["名前（カナ）"].rich_text[0].text.content,
       email: properties.個人メールアドレス.rich_text[0].text.content,
+      isEmployee: false, // RemoteSalesなのでfalse固定
     };
 
     res.json(result);
