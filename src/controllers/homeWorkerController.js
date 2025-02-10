@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-// 在宅ワーカーの取得
+// 在宅ワーカーの一覧取得
 exports.getHomeWorkers = async (_, res) => {
   const databaseId =
     process.env.REACT_APP_NOTION_HOME_WORKER_MANAGEMENT_DB_ENDPOINT_ID;
@@ -15,6 +15,44 @@ exports.getHomeWorkers = async (_, res) => {
             direction: "ascending",
           },
         ],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
+          "Notion-Version": "2022-06-28",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    console.error(
+      "Error querying Notion database:",
+      error.response ? error.response.data : error.message
+    );
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// 在宅ワーカーの詳細取得
+exports.getHomeWorkerDetail = async (req, res) => {
+  const email = req.query.email;
+
+  if (!email) {
+    return res.status(400).json({ error: "Email parameter is required." });
+  }
+
+  try {
+    const response = await axios.post(
+      `https://api.notion.com/v1/databases/${process.env.REACT_APP_NOTION_HOME_WORKER_MANAGEMENT_DB_ENDPOINT_ID}/query`,
+      {
+        filter: {
+          property: "個人メールアドレス",
+          rich_text: {
+            equals: email,
+          },
+        },
       },
       {
         headers: {

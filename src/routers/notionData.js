@@ -13,8 +13,11 @@ router.get("/work-shifts", workShiftController.getShiftManagements);
 router.post("/shift-management", workShiftController.postShiftManagement);
 
 /** 在宅ワーカー関連 */
-// 在宅ワーカーの取得
+// 在宅ワーカーの一覧取得
 router.get("/home-workers", homeWorkerController.getHomeWorkers);
+
+// 在宅ワーカーの詳細取得
+router.get("/home-worker", homeWorkerController.getHomeWorkerDetail);
 
 // 在宅ワーカーをDBに登録する
 router.post(
