@@ -63,7 +63,17 @@ exports.getHomeWorkerDetail = async (req, res) => {
       }
     );
 
-    res.json(response.data);
+    const properties = response.data.results[0].properties;
+
+    const result = {
+      id: response.data.results[0].id,
+      memberId: properties.メンバーID.title[0].text.content,
+      name: properties.名前.rich_text[0].text.content,
+      nameKana: properties["名前（カナ）"].rich_text[0].text.content,
+      email: properties.個人メールアドレス.rich_text[0].text.content,
+    };
+
+    res.json(result);
   } catch (error) {
     console.error(
       "Error querying Notion database:",
