@@ -12,6 +12,12 @@ router.get("/work-shifts", workShiftController.getShiftManagements);
 // シフト管理DBに保存する
 router.post("/shift-management", workShiftController.postShiftManagement);
 
+// シフトの更新
+router.patch(
+  "/shift-management/:id",
+  workShiftController.updateShiftManagement
+);
+
 /** 在宅ワーカー関連 */
 // 在宅ワーカーの一覧取得
 router.get("/home-workers", homeWorkerController.getHomeWorkers);

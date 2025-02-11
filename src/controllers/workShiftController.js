@@ -174,3 +174,58 @@ exports.postShiftManagement = async (req, res) => {
 
   res.json({ message: "Success" });
 };
+
+// シフト管理DBのデータを編集する
+exports.updateShiftManagement = async (req, res) => {
+  const { id, date, startTime, endTime } = req.body;
+
+  // 必須パラメータのチェック
+  if (!id || !date || !startTime || !endTime) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    // 日時文字列にタイムゾーンを付与して ISO8601 形式に変換
+    const startDatetime = addTimezoneWithDayjs(`${date} ${startTime}`);
+    const endDatetime = addTimezoneWithDayjs(`${date} ${endTime}`);
+
+    // ミリ秒単位の差分から勤務時間（時間単位）を算出
+    const diffMilliseconds = Math.abs(
+      new Date(`${date} ${endTime}`).getTime() -
+        new Date(`${date} ${startTime}`).getTime()
+    );
+    const workTime = diffMilliseconds / (1000 * 60 * 60);
+
+    // 更新用のデータを作成
+    const updateData = {
+      properties: {
+        勤務開始時間: {
+          date: { start: startDatetime },
+        },
+        勤務終了時間: {
+          date: { start: endDatetime },
+        },
+        勤務時間: {
+          number: workTime,
+        },
+      },
+    };
+
+    // Notion API のページ更新エンドポイントに PATCH リクエストを送信
+    await axios.patch(`https://api.notion.com/v1/pages/${id}`, updateData, {
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
+        "Content-Type": "application/json",
+        "Notion-Version": "2022-06-28",
+      },
+    });
+
+    res.json({ message: "Shift management updated successfully" });
+  } catch (error) {
+    console.error(
+      "Error updating Notion page:",
+      error.response ? error.response.data : error.message
+    );
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
