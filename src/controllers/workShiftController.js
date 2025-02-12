@@ -220,7 +220,7 @@ exports.updateShiftManagement = async (req, res) => {
       },
     });
 
-    res.json({ message: "Shift management updated successfully" });
+    res.status(200).json({ message: "Shift management updated successfully" });
   } catch (error) {
     console.error(
       "Error updating Notion page:",

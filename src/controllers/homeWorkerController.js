@@ -48,7 +48,7 @@ exports.getHomeWorkerDetail = async (req, res) => {
       `https://api.notion.com/v1/databases/${process.env.REACT_APP_NOTION_HOME_WORKER_MANAGEMENT_DB_ENDPOINT_ID}/query`,
       {
         filter: {
-          property: "個人メールアドレス",
+          property: "会社メールアドレス",
           rich_text: {
             equals: email,
           },
@@ -74,7 +74,7 @@ exports.getHomeWorkerDetail = async (req, res) => {
       memberId: properties.メンバーID.title[0].text.content,
       name: properties.名前.rich_text[0].text.content,
       nameKana: properties["名前（カナ）"].rich_text[0].text.content,
-      email: properties.個人メールアドレス.rich_text[0].text.content,
+      email: properties.会社メールアドレス.rich_text[0].text.content,
       isEmployee: false, // RemoteSalesなのでfalse固定
     };
 
