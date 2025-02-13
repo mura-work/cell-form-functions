@@ -212,15 +212,23 @@ exports.updateShiftManagement = async (req, res) => {
     };
 
     // Notion API のページ更新エンドポイントに PATCH リクエストを送信
-    await axios.patch(`https://api.notion.com/v1/pages/${id}`, updateData, {
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
-        "Content-Type": "application/json",
-        "Notion-Version": "2022-06-28",
-      },
-    });
+    const response = await axios.patch(
+      `https://api.notion.com/v1/pages/${id}`,
+      updateData,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
+          "Content-Type": "application/json",
+          "Notion-Version": "2022-06-28",
+        },
+      }
+    );
+    const result = response.data.properties;
 
-    res.status(200).json({ message: "Shift management updated successfully" });
+    res.status(200).json({
+      startTime: result.勤務開始時間.date.start,
+      endTime: result.勤務終了時間.date.start,
+    });
   } catch (error) {
     console.error(
       "Error updating Notion page:",
