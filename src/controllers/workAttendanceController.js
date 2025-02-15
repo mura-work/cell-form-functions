@@ -172,7 +172,7 @@ exports.postWorkAttendance = async (req, res) => {
 
 // 勤怠DBのレコードを更新するエンドポイント
 exports.updateWorkAttendance = async (req, res) => {
-  const { workAttendanceData } = req.body;
+  const workAttendanceData = req.body;
 
   // 更新する各プロパティを作成
   const properties = {
@@ -222,8 +222,24 @@ exports.updateWorkAttendance = async (req, res) => {
         },
       }
     );
-    console.log(updateResponse.data);
-    res.json(updateResponse.data);
+
+    const result = {
+      id: updateResponse.data.id,
+      memberId:
+        updateResponse.data.properties.メンバーID.rich_text[0].text.content, // メンバーID
+      memberName:
+        updateResponse.data.properties.名前.rollup.array[0].rich_text[0].text
+          .content, // メンバー名
+      workDate: updateResponse.data.properties.勤務日.title[0].text.content, // 勤務日
+      workTimes:
+        updateResponse.data.properties.勤務時刻.rich_text[0].text.content, // 勤務時刻
+      workingTime: updateResponse.data.properties["勤務時間(m)"].number, // 勤務時間
+      workingTimeHour: updateResponse.data.properties["勤務時間(h)"].number, // 勤務時間
+      restTime: updateResponse.data.properties["休憩時間(m)"].number, // 休憩時間
+      absenceTime: updateResponse.data.properties["中抜け時間(m)"].number, // 中抜け時間
+      createdAt: updateResponse.data.properties["登録日"].created_time, // 登録日
+    };
+    res.json(result);
   } catch (error) {
     console.error(error.response ? error.response.data : error.message);
     res.status(500).json({ error: "勤怠情報の更新に失敗しました" });
