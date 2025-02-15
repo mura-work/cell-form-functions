@@ -43,6 +43,18 @@ router.get("/work-attendances", workAttendanceController.getWorkAttendances);
 // 勤務情報を登録する
 router.post("/work-attendance", workAttendanceController.postWorkAttendance);
 
+// 勤怠情報の更新
+router.patch(
+  "/work-attendance/:id",
+  workAttendanceController.updateWorkAttendance
+);
+
+// 勤怠情報の削除
+router.delete(
+  "/work-attendance/:id",
+  workAttendanceController.deleteWorkAttendance
+);
+
 /** 使ってないかも */
 // 法人名（法人番号）の取得
 router.get("client-companies", notionDataController.getClientCompanies);
