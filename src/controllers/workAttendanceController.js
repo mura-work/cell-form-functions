@@ -212,7 +212,7 @@ exports.updateWorkAttendance = async (req, res) => {
 
   try {
     const updateResponse = await axios.patch(
-      `https://api.notion.com/v1/pages/${pageId}`,
+      `https://api.notion.com/v1/pages/${workAttendanceData.id}`,
       { properties },
       {
         headers: {
@@ -233,7 +233,7 @@ exports.updateWorkAttendance = async (req, res) => {
 // 勤怠DBのレコードを削除（アーカイブ）するエンドポイント
 exports.deleteWorkAttendance = async (req, res) => {
   // URLパラメータから Notion のページID を取得する想定です
-  const pageId = req.params.id;
+  const id = req.params.id;
 
   // 必須パラメータのチェック
   if (!id) {
@@ -243,7 +243,7 @@ exports.deleteWorkAttendance = async (req, res) => {
   try {
     // 削除の代わりに、Notion の仕様に従い、ページをアーカイブします
     const deleteResponse = await axios.patch(
-      `https://api.notion.com/v1/pages/${pageId}`,
+      `https://api.notion.com/v1/pages/${id}`,
       { archived: true },
       {
         headers: {
