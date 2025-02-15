@@ -18,6 +18,11 @@ router.patch(
   workShiftController.updateShiftManagement
 );
 
+router.delete(
+  "/shift-management/:id",
+  workShiftController.deleteShiftManagement
+);
+
 /** 在宅ワーカー関連 */
 // 在宅ワーカーの一覧取得
 router.get("/home-workers", homeWorkerController.getHomeWorkers);

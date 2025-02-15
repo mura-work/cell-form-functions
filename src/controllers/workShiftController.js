@@ -237,3 +237,37 @@ exports.updateShiftManagement = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+// シフト管理DBのデータを削除（アーカイブ）する
+exports.deleteShiftManagement = async (req, res) => {
+  // URLパラメータからIDを取得
+  const { id } = req.params;
+
+  // 必須パラメータのチェック
+  if (!id) {
+    return res.status(400).json({ error: "Missing required field: id" });
+  }
+
+  try {
+    // Notion API のページ更新エンドポイントを利用して、archived を true に設定することで削除状態にする
+    await axios.patch(
+      `https://api.notion.com/v1/pages/${id}`,
+      { archived: true },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
+          "Content-Type": "application/json",
+          "Notion-Version": "2022-06-28",
+        },
+      }
+    );
+
+    res.json({ message: "Shift deleted successfully" });
+  } catch (error) {
+    console.error(
+      "Error deleting Notion page:",
+      error.response ? error.response.data : error.message
+    );
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
