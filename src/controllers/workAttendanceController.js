@@ -169,3 +169,97 @@ exports.postWorkAttendance = async (req, res) => {
     res.status(500).json({ error: "Something went wrong!" });
   }
 };
+
+// 勤怠DBのレコードを更新するエンドポイント
+exports.updateWorkAttendance = async (req, res) => {
+  const { workAttendanceData } = req.body;
+
+  // 更新する各プロパティを作成
+  const properties = {
+    勤務日: {
+      title: [
+        {
+          text: {
+            content: workAttendanceData.workDate,
+          },
+        },
+      ],
+    },
+    勤務時刻: {
+      rich_text: [
+        {
+          text: {
+            content: workAttendanceData.workTimes,
+          },
+        },
+      ],
+    },
+    // 数値のフィールド（null や undefined であれば更新対象から除外するなど、必要に応じた処理を行ってください）
+    "勤務時間(m)": {
+      number: workAttendanceData.workingTime,
+    },
+    "勤務時間(h)": {
+      number: workAttendanceData.workingTimeHour,
+    },
+    "休憩時間(m)": {
+      number: workAttendanceData.restTime,
+    },
+    "中抜け時間(m)": {
+      number: workAttendanceData.absenceTime,
+    },
+    // 必要に応じて他のプロパティも追加
+  };
+
+  try {
+    const updateResponse = await axios.patch(
+      `https://api.notion.com/v1/pages/${pageId}`,
+      { properties },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
+          "Notion-Version": "2022-06-28",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log(updateResponse.data);
+    res.json(updateResponse.data);
+  } catch (error) {
+    console.error(error.response ? error.response.data : error.message);
+    res.status(500).json({ error: "勤怠情報の更新に失敗しました" });
+  }
+};
+
+// 勤怠DBのレコードを削除（アーカイブ）するエンドポイント
+exports.deleteWorkAttendance = async (req, res) => {
+  // URLパラメータから Notion のページID を取得する想定です
+  const pageId = req.params.id;
+
+  // 必須パラメータのチェック
+  if (!id) {
+    return res.status(400).json({ error: "Missing required field: id" });
+  }
+
+  try {
+    // 削除の代わりに、Notion の仕様に従い、ページをアーカイブします
+    const deleteResponse = await axios.patch(
+      `https://api.notion.com/v1/pages/${pageId}`,
+      { archived: true },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
+          "Notion-Version": "2022-06-28",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    res.json({
+      message: "勤怠情報を削除しました。",
+      data: deleteResponse.data,
+    });
+  } catch (error) {
+    console.error(error.response ? error.response.data : error.message);
+    res.status(500).json({ error: "勤怠情報の削除に失敗しました" });
+  }
+};
