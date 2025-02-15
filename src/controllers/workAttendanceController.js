@@ -2,7 +2,7 @@ const axios = require("axios");
 
 // 勤怠管理DBのデータを一覧で取得
 exports.getWorkAttendances = async (req, res) => {
-  const id = req.query.id;
+  const memberId = req.query.memberId;
 
   const body = {
     sorts: [
@@ -13,11 +13,11 @@ exports.getWorkAttendances = async (req, res) => {
     ],
   };
 
-  if (id) {
+  if (memberId) {
     body.filter = {
       property: "メンバーID",
-      relation: {
-        contains: id,
+      rich_text: {
+        equals: memberId,
       },
     };
   }
@@ -38,7 +38,7 @@ exports.getWorkAttendances = async (req, res) => {
     const results = workAttendances.data.results.map((result) => {
       return {
         id: result.id,
-        memberId: result.properties.メンバーID.relation[0].id, // メンバーID
+        memberId: result.properties.メンバーID.rich_text[0].text.content, // メンバーID
         memberName:
           result.properties.名前.rollup.array[0].rich_text[0].text.content, // メンバー名
         workDate: result.properties.勤務日.title[0].text.content, // 勤務日

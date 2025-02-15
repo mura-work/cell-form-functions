@@ -57,7 +57,7 @@ exports.getShiftManagements = async (req, res) => {
     const results = response.data.results.map((result) => {
       return {
         id: result.id,
-        memberId: memberId, // メンバーID
+        memberId: result.properties.メンバーID.rich_text[0].text.content, // メンバーID
         name: result.properties.名前.title[0].text.content, // 名前
         startTime: result.properties.勤務開始時間.date.start, // 勤務開始時間
         endTime: result.properties.勤務終了時間.date.start, // 勤務終了時間
