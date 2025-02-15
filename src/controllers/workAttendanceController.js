@@ -113,7 +113,17 @@ exports.postWorkAttendance = async (req, res) => {
               ],
             },
             メンバーID: {
-              relation: [{ id: workAttendance.memberId }],
+              rich_text: [
+                {
+                  type: "text",
+                  text: {
+                    content: workAttendance.memberId,
+                  },
+                },
+              ],
+            },
+            "メンバーID（リレーション）": {
+              relation: [{ id: workAttendance.memberRollupId }],
             },
             "勤務時間(m)": {
               number: data.workingTime,
