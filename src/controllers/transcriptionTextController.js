@@ -6,10 +6,10 @@ exports.summarizeTranscriptionText = async (req, res) => {
     const response = await axios.post(
       "https://api.openai.com/v1/chat/completions",
       {
-        model: "o1-preview",
+        model: "gpt-4o",
         messages: [
           {
-            role: "user",
+            role: "system",
             content: `
 						下記のテキストは議事録の文字起こしです。以下の指示に従い、できるだけ原文の意味を変えずに自然で読みやすい日本語の文章体に変換してください。
 
@@ -19,7 +19,11 @@ exports.summarizeTranscriptionText = async (req, res) => {
 							4. 文脈が明確になるように、必要に応じて接続詞や指示語を追加してください。
 							5. 変換後のテキストは、元のトランスクリプトの内容を一切要約せず、すべて網羅してください。
 							6. 明らかに話題が変わったタイミングがあれば、【〇〇】のようにラベルを付けて段落を区切り、セグメントごとに整理してください。
-
+						`,
+          },
+          {
+            role: "user",
+            content: `
 							上記のルールを元に、文字起こしテキストを要約してください。
 							出力形式を必ず守ってください。
 
@@ -28,7 +32,7 @@ exports.summarizeTranscriptionText = async (req, res) => {
 					`,
           },
         ],
-        // temperature: 0,
+        temperature: 0,
         max_tokens: 16384,
       },
       {
