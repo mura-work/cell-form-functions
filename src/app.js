@@ -2,6 +2,7 @@
 const express = require("express");
 const routers = require("./routers"); // ルーティングのエントリーポイント
 const cors = require("cors");
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
@@ -14,6 +15,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// 静的ファイルの提供
+app.use(express.static(path.join(__dirname, "public")));
 
 // APIルート
 app.use("/api", routers);

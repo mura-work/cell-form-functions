@@ -8,9 +8,13 @@ const upload = multer({
   limits: { fileSize: 25 * 1024 * 1024 }, // 25MBの制限
 });
 
+// 'audio'または'file'という名前のフィールドを受け付ける
 router.post(
   "/transcription-audio",
-  upload.single("audio"),
+  upload.fields([
+    { name: "audio", maxCount: 1 },
+    { name: "file", maxCount: 1 },
+  ]),
   transcriptionController.transcribeAudio
 );
 
