@@ -12,8 +12,8 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
-app.use(express.json({ limit: "25mb" }));
-app.use(express.urlencoded({ extended: true, limit: "25mb" }));
+app.use(express.json({ limit: "4mb" }));
+app.use(express.urlencoded({ extended: true, limit: "4mb" }));
 
 // APIルート
 app.use("/api", routers);

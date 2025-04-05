@@ -5,17 +5,17 @@ const multer = require("multer");
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 25 * 1024 * 1024 }, // 25MBの制限
+  limits: { fileSize: 4 * 1024 * 1024 }, // 4MBの制限
 });
 
-// 'audio'または'file'という名前のフィールドを受け付ける
+// チャンク処理用の新しいルート
 router.post(
-  "/transcription-audio",
+  "/transcription-audio-chunk",
   upload.fields([
     { name: "audio", maxCount: 1 },
     { name: "file", maxCount: 1 },
   ]),
-  transcriptionController.transcribeAudio
+  transcriptionController.transcribeAudioChunk
 );
 
 module.exports = router;
