@@ -65,4 +65,7 @@ router.get("/sales-employees", notionDataController.getSalesEmployees);
 // 商品の取得
 router.get("/products", notionDataController.getProducts);
 
+// 給与管理レコードの作成
+router.post("/create-salary-records", homeWorkerController.createSalaryRecords);
+
 module.exports = router;
