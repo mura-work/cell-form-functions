@@ -522,6 +522,11 @@ exports.createSalaryRecords = async (_, res) => {
           },
         }
       );
+
+      console.log(
+        worker.properties.名前.rich_text[0].text.content +
+          "のデータを作成しました。"
+      );
     });
 
     res.json({ message: "Success" });

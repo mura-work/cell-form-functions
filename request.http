@@ -1,2 +1,2 @@
 ### 給与管理レコードの作成APIを叩く
-# GET http://localhost:3005/api/notion-data/create-salary-records
+GET http://localhost:3005/api/notion-data/create-salary-records
