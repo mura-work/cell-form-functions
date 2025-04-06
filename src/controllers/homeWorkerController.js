@@ -470,7 +470,7 @@ exports.createSalaryRecords = async (_, res) => {
     const month = today.getMonth() + 2; // 来月なので+2
     const yearMonth = `${year}-${month.toString().padStart(2, "0")}`;
 
-    workers.results.forEach(async (worker) => {
+    for (const worker of workers.results) {
       const hourlyWage = hourlyWageValues.results.find(
         (w) => w.properties["メンバー管理DB"].relation[0].id === worker.id
       );
@@ -522,12 +522,7 @@ exports.createSalaryRecords = async (_, res) => {
           },
         }
       );
-
-      console.log(
-        worker.properties.名前.rich_text[0].text.content +
-          "のデータを作成しました。"
-      );
-    });
+    }
 
     res.json({ message: "Success" });
   } catch (e) {
