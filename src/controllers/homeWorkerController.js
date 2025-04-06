@@ -399,9 +399,34 @@ exports.postRegisterNewHomeWorker = async (req, res) => {
   }
 };
 // 時給管理DBの値をすべて取得
-exports.getHourlyWage = async (_, res) => {
+const getHourlyWage = async () => {
   const databaseId =
     process.env.REACT_APP_NOTION_HOME_WORKER_HOURLY_WAGE_DB_ENDPOINT_ID;
+  const response = await axios.post(
+    `https://api.notion.com/v1/databases/${databaseId}/query`,
+    {
+      filter: {
+        property: "退職フラグ",
+        select: {
+          equals: "在職中",
+        },
+      },
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
+        "Notion-Version": "2022-06-28",
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return response.data;
+};
+
+const getHomeWorkers = async () => {
+  const databaseId =
+    process.env.REACT_APP_NOTION_HOME_WORKER_MANAGEMENT_DB_ENDPOINT_ID;
   const response = await axios.post(
     `https://api.notion.com/v1/databases/${databaseId}/query`,
     {
@@ -427,76 +452,81 @@ exports.getHourlyWage = async (_, res) => {
     }
   );
 
-  res.json(response.data);
+  return response.data;
 };
 
 // 在宅ワーカーの給与管理レコードを作成する
 exports.createSalaryRecords = async (_, res) => {
-  // 在宅ワーカー管理のDBからアクティブユーザーを取得
-  const workers = await this.getHomeWorkers();
+  try {
+    // 在宅ワーカー管理のDBからアクティブユーザーを取得
+    const workers = await getHomeWorkers();
 
-  // 時給管理DBからアクティブな値を取得
-  const hourlyWageValues = await this.getHourlyWage();
+    // 時給管理DBからアクティブな値を取得
+    const hourlyWageValues = await getHourlyWage();
 
-  // 来月の日付のyyyy-mmの形式に変換
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const yearMonth = `${year}-${month.toString().padStart(2, "0")}`;
+    // 来月の日付のyyyy-mmの形式に変換
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 2; // 来月なので+2
+    const yearMonth = `${year}-${month.toString().padStart(2, "0")}`;
 
-  workers.results.forEach(async (worker) => {
-    const workerId = worker.properties["メンバーID"].title[0].text.content;
-    const hourlyWage = hourlyWageValues.results.find(
-      (w) => w.properties["メンバーID"].title[0].text.content === workerId
-    );
+    workers.results.forEach(async (worker) => {
+      const hourlyWage = hourlyWageValues.results.find(
+        (w) => w.properties["メンバー管理DB"].relation[0].id === worker.id
+      );
 
-    const payrollManagementParams = {
-      parent: {
-        database_id:
-          process.env.REACT_APP_NOTION_HOME_WORK_PAY_MANAGEMENT_DB_ENDPOINT_ID,
-      },
-      properties: {
-        給与月: {
-          title: [
-            {
-              text: {
-                content: `${worker.properties.名前.rich_text[0].text.content}-${yearMonth}`,
+      const payrollManagementParams = {
+        parent: {
+          database_id:
+            process.env
+              .REACT_APP_NOTION_HOME_WORK_PAY_MANAGEMENT_DB_ENDPOINT_ID,
+        },
+        properties: {
+          給与月: {
+            title: [
+              {
+                text: {
+                  content: `${worker.properties.名前.rich_text[0].text.content}-${yearMonth}`,
+                },
               },
-            },
-          ],
-        },
-        勤務月: {
-          rich_text: [
-            {
-              type: "text",
-              text: {
-                content: yearMonth,
+            ],
+          },
+          勤務月: {
+            rich_text: [
+              {
+                type: "text",
+                text: {
+                  content: yearMonth,
+                },
               },
-            },
-          ],
+            ],
+          },
+          メンバーDB: {
+            relation: [{ id: worker.id }],
+          },
+          時給マスタ: {
+            relation: [{ id: hourlyWage.id }],
+          },
         },
-        メンバーDB: {
-          relation: [{ id: worker.id }],
-        },
-        時給マスタ: {
-          relation: [{ id: hourlyWage.data.id }],
-        },
-      },
-    };
+      };
 
-    // 翌月分のデータをの給与管理DBに登録
-    await axios.post(
-      process.env.REACT_APP_NOTION_API_URL,
-      payrollManagementParams,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
-          "Content-Type": "application/json",
-          "Notion-Version": "2022-06-28",
-        },
-      }
-    );
-  });
+      // 翌月分のデータをの給与管理DBに登録
+      await axios.post(
+        process.env.REACT_APP_NOTION_API_URL,
+        payrollManagementParams,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_NOTION_API_TOKEN}`,
+            "Content-Type": "application/json",
+            "Notion-Version": "2022-06-28",
+          },
+        }
+      );
+    });
 
-  res.json({ message: "Success" });
+    res.json({ message: "Success" });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: e });
+  }
 };
