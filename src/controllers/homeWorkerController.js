@@ -15,6 +15,12 @@ exports.getHomeWorkers = async (_, res) => {
             direction: "ascending",
           },
         ],
+        filter: {
+          property: "退職フラグ",
+          select: {
+            equals: "在職中",
+          },
+        },
       },
       {
         headers: {
