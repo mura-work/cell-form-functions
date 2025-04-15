@@ -1,23 +1,11 @@
 const axios = require("axios");
 
-// === 1. テキストを分割する関数 ===
-function chunkText(text, chunkSize = 2000) {
-  const chunks = [];
-  let start = 0;
-  while (start < text.length) {
-    // chunkSizeずつ分割（改行や句点単位での分割など、必要に応じて工夫してください）
-    chunks.push(text.slice(start, start + chunkSize));
-    start += chunkSize;
-  }
-  return chunks;
-}
-
 async function requestOpenAI(text) {
   try {
     const response = await axios.post(
       "https://api.openai.com/v1/chat/completions",
       {
-        model: "gpt-4.1-nano",
+        model: "gpt-4.1-mini",
         messages: [
           {
             role: "system",
@@ -74,23 +62,11 @@ exports.summarizeTranscriptionText = async (req, res) => {
       return res.status(400).json({ error: "No text provided" });
     }
 
-    // 1) テキストを分割
-    const chunks = chunkText(transcriptionText, 2000);
+    const result = await requestOpenAI(transcriptionText);
 
-    // 2) 順番に GPT-4 で変換
-    const transformedChunks = [];
-    for (const chunk of chunks) {
-      const result = await requestOpenAI(chunk);
-      transformedChunks.push(result);
-    }
-
-    // 3) 結合して最終結果にする
-    const finalText = transformedChunks.join("\n");
-
-    // 4) クライアントに返す
     res.json({
       status: "success",
-      data: finalText,
+      data: result,
     });
   } catch (e) {
     console.log(e);
