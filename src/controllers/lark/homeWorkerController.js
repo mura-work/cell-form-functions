@@ -50,6 +50,43 @@ exports.getHomeWorkers = async (_, res) => {
   res.json(records);
 };
 
+// 対象のメンバーを取得する
+exports.getTargetHomeWorker = async (req, res) => {
+  const appAccessToken = await getAppAccessToken();
+  const appToken = "EyI0b8tEea9PxQsFhiyjdoLbpV3";
+  const tableId = "tbl8Zef1I5HocKbP";
+  const endpoint = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appToken}/tables/${tableId}`;
+
+  const email = req.query.email;
+  const filter = `filter=CurrentValue.[会社メールアドレス]="${email}"`;
+  const url = `${endpoint}/records?${filter}`;
+  const result = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${appAccessToken}`,
+    },
+  });
+
+  if (result.data.error || result.data.data.items.length === 0) {
+    res.status(400).json({
+      message: "エラーが発生しました。",
+      ...result.data,
+    });
+    return;
+  }
+
+  const item = result.data.data.items[0];
+  const memberData = {
+    id: item.id,
+    memberId: item.fields["メンバーID"],
+    name: item.fields["名前"],
+    nameKana: item.fields["名前（カナ）"],
+    email: item.fields["会社メールアドレス"]["text"],
+    isEmployee: false, // RemoteSalesなのでfalse固定
+  };
+
+  res.json(memberData);
+};
+
 // RemoteSalesのデータを新規作成
 exports.createRemoteSalesData = async (req, res) => {
   const appAccessToken = await getAppAccessToken();

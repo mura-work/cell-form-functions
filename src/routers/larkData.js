@@ -8,5 +8,6 @@ router.post(
   "/create-remote-sales-data",
   larkDataController.createRemoteSalesData
 );
+router.get("/target-home-worker", larkDataController.getTargetHomeWorker);
 
 module.exports = router;
