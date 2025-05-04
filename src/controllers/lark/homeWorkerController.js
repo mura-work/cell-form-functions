@@ -40,6 +40,6 @@ exports.getHomeWorkers = async (_, res) => {
     value: record.fields["メンバーID"], // "RS-1" 選択されたときの値 IDと同じものを入れる
     name: record.fields["名前"],
   }));
-  console.log({ records });
+
   res.json(records);
 };
