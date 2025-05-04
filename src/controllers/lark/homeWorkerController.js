@@ -21,7 +21,7 @@ const getAppAccessToken = async () => {
 const getTableRecords = async (appAccessToken) => {
   const appToken = "EyI0b8tEea9PxQsFhiyjdoLbpV3";
   const tableId = "tbl8Zef1I5HocKbP";
-  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appToken}/tables/${tableId}/records?page_size=20`;
+  const url = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appToken}/tables/${tableId}/records?filter=CurrentValue.[退職フラグ]="在職中"&page_size=20`;
   const res = await axios.get(url, {
     headers: {
       Authorization: `Bearer ${appAccessToken}`,
