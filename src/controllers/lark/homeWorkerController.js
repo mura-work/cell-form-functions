@@ -104,14 +104,44 @@ exports.createRemoteSalesData = async (req, res) => {
     }
   );
 
+  // エラーが出たらそこで処理を止める
   if (response.data.error) {
     res.status(400).json({
       message: "エラーが発生しました。再度登録してください。",
       ...response.data,
     });
-  } else {
-    res.status(200).json({
-      message: "登録が完了しました。",
-    });
+    return;
   }
+
+  // 時給マスタにデータを保存する
+  const result = await axios.post(
+    `https://open.larksuite.com/open-apis/bitable/v1/apps/TsdJbCkPIa2N3osmoCVj2aYypDg/tables/tblEllg3rc0imqqG/records`,
+    {
+      fields: {
+        名前: params.name,
+        役職: "メンバー",
+        時給: 1300, // いったん1300固定、変更があれば保存後にBaseから修正する
+        開始期間: params.earliestStartDate,
+        退職フラグ: "在職中",
+      },
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${appAccessToken}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (result.data.error) {
+    res.status(400).json({
+      message: "エラーが発生しました。再度登録してください。",
+      ...result.data,
+    });
+    return;
+  }
+
+  res.json({
+    message: "メンバーを追加しました。",
+  });
 };
