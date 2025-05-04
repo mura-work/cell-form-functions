@@ -34,5 +34,12 @@ exports.getHomeWorkers = async (_, res) => {
   const appAccessToken = await getAppAccessToken();
   const tableRecords = await getTableRecords(appAccessToken);
 
-  res.json(tableRecords);
+  // 必要な情報のみ取り出す
+  const records = tableRecords.data.items.map((record) => ({
+    id: record.fields["メンバーID"], // "RS-1"
+    value: record.fields["メンバーID"], // "RS-1" 選択されたときの値 IDと同じものを入れる
+    name: record.fields["名前"],
+  }));
+  console.log({ records });
+  res.json(records);
 };
