@@ -1,2 +1,24 @@
 ### 給与管理レコードの作成APIを叩く
-GET http://localhost:3005/api/lark-data/home-workers
+# GET http://localhost:3005/api/lark-data/home-workers
+
+POST http://localhost:3005/api/lark-data/create-remote-sales-data
+Content-Type: application/json
+
+{
+	"newHomeWorkerValue": {
+		"name": "山田太郎",
+		"nameKana": "ヤマダタロウ",
+		"personalAddress": "yama@gmail.com",
+		"phoneNumber": "090-1234-5678",
+		"bankName": "三菱UFJ銀行",
+		"branchName": "本店",
+		"accountType": "普通預金",
+		"accountNumber": "1234567890",
+		"accountHolder": "山田太郎",
+		"birthday": "1990-01-01",
+		"address": "東京都千代田区永田町1-7-1",
+		"home": "東京都千代田区永田町1-7-1",
+		"earliestStartDate": "2025/05/01",
+		"estimatedWorkingHoursPerMonth": 160
+	}
+}
