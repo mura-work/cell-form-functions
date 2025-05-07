@@ -66,11 +66,12 @@ exports.getTargetHomeWorker = async (req, res) => {
     },
   });
 
-  if (result.data.error || result.data.data.items.length === 0) {
-    res.status(400).json({
-      message: "エラーが発生しました。",
-      ...result.data,
-    });
+  if (
+    result.data.error ||
+    !result.data.data.items ||
+    result.data.data.items?.length === 0
+  ) {
+    res.status(200).json(null);
     return;
   }
 
