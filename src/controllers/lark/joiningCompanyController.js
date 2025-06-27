@@ -23,7 +23,7 @@ exports.createJoiningCompany = async (req, res) => {
     const appAccessToken = await getAppAccessToken();
 
     const params = req.body;
-
+    console.log({ params });
     const fieldMapping = {
       名前: params.name,
       "名前（カナ）": params.nameKana,
@@ -47,7 +47,7 @@ exports.createJoiningCompany = async (req, res) => {
       前職の退職日: params.previousJobResignationDate,
       雇用保険番号: params.employmentInsuranceNumber,
     };
-
+    console.log({ fieldMapping });
     const appToken = "WsgSbVf0ea0xwnsY3VrjSLTNpph";
     const tableId = "tblm2M2Dlm0O6u6J";
     const endpoint = `https://open.larksuite.com/open-apis/bitable/v1/apps/${appToken}/tables/${tableId}/records`;
