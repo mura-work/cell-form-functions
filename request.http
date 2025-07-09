@@ -1,51 +1,49 @@
 # GET http://localhost:3005/api/lark-data/target-home-worker?email=naoya.murata@nihon-sales.com
 
-# POST http://localhost:3005/api/lark-data/create-remote-sales-data
-# Content-Type: application/json
-
-# {
-# 	"newHomeWorkerValue": {
-# 		"name": "山田太郎",
-# 		"nameKana": "ヤマダタロウ",
-# 		"personalAddress": "yama@gmail.com",
-# 		"phoneNumber": "090-1234-5678",
-# 		"bankName": "三菱UFJ銀行",
-# 		"branchName": "本店",
-# 		"accountType": "普通預金",
-# 		"accountNumber": "1234567890",
-# 		"accountHolder": "山田太郎",
-# 		"birthday": "1990-01-01",
-# 		"address": "東京都千代田区永田町1-7-1",
-# 		"home": "東京都千代田区永田町1-7-1",
-# 		"earliestStartDate": "2025/05/01",
-# 		"estimatedWorkingHoursPerMonth": 160
-# 	}
-# }
-
-POST http://localhost:3005/api/spreadsheet/joining-company
+POST http://localhost:3005/api/spreadsheet/new-contract-employee
 Content-Type: application/json
 
 {
-	"type": "joinedCompany",
 	"name": "山田太郎",
-	"nameKana": "ヤマダ",
-	"personalAddress": "sample@example.com",
-	"phoneNumber": "080-1234-5678",
-	"residenceAddress": "東京都渋谷区渋谷1-1-1",
-	"currentAddress": "東京都渋谷区渋谷1-1-1",
-	"nearestStation": "JR渋谷駅",
-	"bankName": "〇〇銀行",
-	"branchName": "〇〇支店",
+	"nameKana": "ヤマダタロウ",
+	"personalAddress": "yama@gmail.com",
+	"phoneNumber": "090-1234-5678",
+	"bankName": "三菱UFJ銀行",
+	"branchName": "本店",
 	"accountType": "普通",
-	"accountNumber": "1234567",
-	"accountHolder": "ヤマダタロウ",
-	"birthday": "2025-06-30",
-	"joinDate": "2025-07-01",
-	"myNumber": "1234567890122",
-	"householdHead": "山田花子",
-	"householdHeadRelationship": "本人",
-	"emergencyContact": "080-1234-5678",
-	"emergencyContactRelationship": "配偶者",
-	"previousJobResignationDate": "2024-03-31",
-	"employmentInsuranceNumber": "1234-567890-1"
+	"accountNumber": "1234567890",
+	"accountHolder": "山田太郎",
+	"birthday": "1990-01-01",
+	"address": "東京都千代田区永田町1-7-1",
+	"home": "東京都千代田区永田町1-7-1",
+	"earliestStartDate": "2025/05/01",
+	"estimatedWorkingHoursPerMonth": 160
 }
+
+# POST http://localhost:3005/api/spreadsheet/joining-company
+# Content-Type: application/json
+
+# {
+# 	"type": "joinedCompany",
+# 	"name": "山田太郎",
+# 	"nameKana": "ヤマダ",
+# 	"personalAddress": "sample@example.com",
+# 	"phoneNumber": "080-1234-5678",
+# 	"residenceAddress": "東京都渋谷区渋谷1-1-1",
+# 	"currentAddress": "東京都渋谷区渋谷1-1-1",
+# 	"nearestStation": "JR渋谷駅",
+# 	"bankName": "〇〇銀行",
+# 	"branchName": "〇〇支店",
+# 	"accountType": "普通",
+# 	"accountNumber": "1234567",
+# 	"accountHolder": "ヤマダタロウ",
+# 	"birthday": "2025-06-30",
+# 	"joinDate": "2025-07-01",
+# 	"myNumber": "1234567890122",
+# 	"householdHead": "山田花子",
+# 	"householdHeadRelationship": "本人",
+# 	"emergencyContact": "080-1234-5678",
+# 	"emergencyContactRelationship": "配偶者",
+# 	"previousJobResignationDate": "2024-03-31",
+# 	"employmentInsuranceNumber": "1234-567890-1"
+# }
