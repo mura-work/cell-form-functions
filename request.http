@@ -22,10 +22,11 @@
 # 	}
 # }
 
-POST http://localhost:3005/api/lark-data/joining-company
+POST http://localhost:3005/api/spreadsheet/joining-company
 Content-Type: application/json
 
 {
+	"type": "joinedCompany",
 	"name": "山田太郎",
 	"nameKana": "ヤマダ",
 	"personalAddress": "sample@example.com",
