@@ -1,11 +1,11 @@
 const axios = require("axios");
 
-exports.createShift = async (req, res) => {
+exports.createWorkShift = async (req, res) => {
   try {
     const params = req.body;
 
     const fieldMapping = {
-      type: "shift", // typeでメソッドを分岐させる
+      type: "workShift", // typeでメソッドを分岐させる
       ...params,
     };
     console.log({ fieldMapping });
@@ -37,10 +37,10 @@ exports.createShift = async (req, res) => {
   }
 };
 
-exports.getShiftByEmail = async (req, res) => {
+exports.getWorkShiftByEmail = async (req, res) => {
   try {
     const email = req.query.email;
-    const url = `${process.env.REACT_APP_REMOTE_SALES_MANAGEMENT_ENDPOINT}?type=shift&email=${email}`;
+    const url = `${process.env.REACT_APP_REMOTE_SALES_MANAGEMENT_ENDPOINT}?type=workShift&email=${email}`;
     const shifts = await axios.get(url).then((r) => r.data);
     res.json(shifts);
   } catch (error) {
@@ -52,9 +52,9 @@ exports.getShiftByEmail = async (req, res) => {
   }
 };
 
-exports.getShifts = async (_, res) => {
+exports.getWorkShifts = async (_, res) => {
   try {
-    const url = `${process.env.REACT_APP_REMOTE_SALES_MANAGEMENT_ENDPOINT}?type=shift`;
+    const url = `${process.env.REACT_APP_REMOTE_SALES_MANAGEMENT_ENDPOINT}?type=workShift`;
     const shifts = await axios.get(url).then((r) => r.data);
     res.json(shifts);
   } catch (error) {

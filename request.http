@@ -1,13 +1,14 @@
-# GET http://localhost:3005/api/spreadsheet/work-report?email=rina.kobayashi@nihon-sales.com
+# GET http://localhost:3005/api/spreadsheet/work-shifts
+# GET http://localhost:3005/api/spreadsheet/work-shift?type=workShift&email=rina.kobayashi@nihon-sales.com
 
 
 # GET https://script.google.com/a/macros/nihon-sales.com/s/AKfycbziG8O1u1NAkyWYc4weRtge8if33ZGN3KbsCjQZQnvurY8GQYjCJcIJpnmwgB5BaLoatQ/exec?type=members&email=emi.ohashi@nihon-sales.com
 
-# POST http://localhost:3005/api/spreadsheet/work-attendances
+# POST http://localhost:3005/api/spreadsheet/work-shifts
 # Content-Type: application/json
 
 # {
-# 	"type": "shift",
+# 	"type": "workShift",
 # 	"memberId": "RS-1000",
 # 	"startDatetime": "2025-07-01T09:00:00.000Z",
 # 	"endDatetime": "2025-07-01T18:00:00.000Z"
