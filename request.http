@@ -14,6 +14,8 @@
 # 	"endDatetime": "2025-07-01T18:00:00.000Z"
 # }
 
+DELETE http://localhost:3005/api/spreadsheet/work-shifts/185
+
 # POST http://localhost:3005/api/spreadsheet/work-reports
 # Content-Type: application/json
 

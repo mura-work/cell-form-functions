@@ -5,7 +5,7 @@ exports.createWorkShift = async (req, res) => {
     const params = req.body;
 
     const fieldMapping = {
-      type: "workShift", // typeでメソッドを分岐させる
+      type: "createWorkShift", // typeでメソッドを分岐させる
       ...params,
     };
     console.log({ fieldMapping });
@@ -59,6 +59,26 @@ exports.getWorkShifts = async (_, res) => {
     res.json(shifts);
   } catch (error) {
     console.error("シフト一覧取得処理エラー:", error);
+    res.status(500).json({
+      message: "システムエラーが発生しました。",
+      error: error.message,
+    });
+  }
+};
+
+exports.deleteWorkShift = async (req, res) => {
+  try {
+    console.log(req.params.shiftId);
+    const response = await axios.post(
+      process.env.REACT_APP_REMOTE_SALES_MANAGEMENT_ENDPOINT,
+      {
+        type: "deleteWorkShift", // typeでメソッドを分岐させる
+        shiftId: req.params.shiftId,
+      }
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("シフト削除処理エラー:", error);
     res.status(500).json({
       message: "システムエラーが発生しました。",
       error: error.message,
