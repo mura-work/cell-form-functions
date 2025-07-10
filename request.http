@@ -1,6 +1,9 @@
+# GET http://localhost:3005/api/spreadsheet/shift?email=sample@example.com
+
+
 # GET https://script.google.com/a/macros/nihon-sales.com/s/AKfycbziG8O1u1NAkyWYc4weRtge8if33ZGN3KbsCjQZQnvurY8GQYjCJcIJpnmwgB5BaLoatQ/exec?type=members&email=emi.ohashi@nihon-sales.com
 
-POST https://script.google.com/a/macros/nihon-sales.com/s/AKfycbziG8O1u1NAkyWYc4weRtge8if33ZGN3KbsCjQZQnvurY8GQYjCJcIJpnmwgB5BaLoatQ/exec
+POST http://localhost:3005/api/spreadsheet/shifts
 Content-Type: application/json
 
 {

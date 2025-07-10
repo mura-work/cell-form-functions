@@ -3,9 +3,8 @@ const axios = require("axios");
 exports.createNewContractEmployee = async (req, res) => {
   try {
     // メンバー一覧を取得して最後に登録したメンバーのメンバーIDを参照する
-    const members = await axios
-      .get(process.env.REACT_APP_REMOTE_SALES_MANAGEMENT_ENDPOINT)
-      .then((r) => r.data);
+    const url = `${process.env.REACT_APP_REMOTE_SALES_MANAGEMENT_ENDPOINT}?type=members`;
+    const members = await axios.get(url).then((r) => r.data);
 
     const lastMemberId = members.at(-1).memberId;
     const newMemberId = lastMemberId.replace(/RS-/, "");

@@ -36,3 +36,32 @@ exports.createShift = async (req, res) => {
     });
   }
 };
+
+exports.getShiftByEmail = async (req, res) => {
+  try {
+    const email = req.query.email;
+    const url = `${process.env.REACT_APP_REMOTE_SALES_MANAGEMENT_ENDPOINT}?type=shift&email=${email}`;
+    const shifts = await axios.get(url).then((r) => r.data);
+    res.json(shifts);
+  } catch (error) {
+    console.error("シフト取得処理エラー:", error);
+    res.status(500).json({
+      message: "システムエラーが発生しました。",
+      error: error.message,
+    });
+  }
+};
+
+exports.getShifts = async (_, res) => {
+  try {
+    const url = `${process.env.REACT_APP_REMOTE_SALES_MANAGEMENT_ENDPOINT}?type=shift`;
+    const shifts = await axios.get(url).then((r) => r.data);
+    res.json(shifts);
+  } catch (error) {
+    console.error("シフト取得処理エラー:", error);
+    res.status(500).json({
+      message: "システムエラーが発生しました。",
+      error: error.message,
+    });
+  }
+};
