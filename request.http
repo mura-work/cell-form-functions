@@ -1,19 +1,19 @@
-# GET http://localhost:3005/api/spreadsheet/shift?email=sample@example.com
+# GET http://localhost:3005/api/spreadsheet/work-report?email=rina.kobayashi@nihon-sales.com
 
 
 # GET https://script.google.com/a/macros/nihon-sales.com/s/AKfycbziG8O1u1NAkyWYc4weRtge8if33ZGN3KbsCjQZQnvurY8GQYjCJcIJpnmwgB5BaLoatQ/exec?type=members&email=emi.ohashi@nihon-sales.com
 
-POST http://localhost:3005/api/spreadsheet/shifts
-Content-Type: application/json
+# POST http://localhost:3005/api/spreadsheet/work-attendances
+# Content-Type: application/json
 
-{
-	"type": "shift",
-	"memberId": "RS-1000",
-	"startDatetime": "2025-07-01T09:00:00.000Z",
-	"endDatetime": "2025-07-01T18:00:00.000Z"
-}
+# {
+# 	"type": "shift",
+# 	"memberId": "RS-1000",
+# 	"startDatetime": "2025-07-01T09:00:00.000Z",
+# 	"endDatetime": "2025-07-01T18:00:00.000Z"
+# }
 
-# POST https://script.google.com/a/macros/nihon-sales.com/s/AKfycbziG8O1u1NAkyWYc4weRtge8if33ZGN3KbsCjQZQnvurY8GQYjCJcIJpnmwgB5BaLoatQ/exec
+# POST http://localhost:3005/api/spreadsheet/work-reports
 # Content-Type: application/json
 
 # {
