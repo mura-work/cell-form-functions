@@ -17,6 +17,7 @@ router.post("/work-shifts", workShiftController.createWorkShift);
 router.get("/work-shifts", workShiftController.getWorkShifts);
 router.get("/work-shift", workShiftController.getWorkShiftByEmail);
 router.delete("/work-shifts/:shiftId", workShiftController.deleteWorkShift);
+router.put("/work-shifts/:shiftId", workShiftController.updateWorkShift);
 
 // 稼働報告
 router.post("/work-reports", workReportController.createWorkReport);

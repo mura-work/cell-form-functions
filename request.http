@@ -8,13 +8,24 @@
 # Content-Type: application/json
 
 # {
-# 	"type": "workShift",
+# 	"type": "createWorkShift",
 # 	"memberId": "RS-1000",
 # 	"startDatetime": "2025-07-01T09:00:00.000Z",
 # 	"endDatetime": "2025-07-01T18:00:00.000Z"
 # }
 
-DELETE http://localhost:3005/api/spreadsheet/work-shifts/185
+PUT http://localhost:3005/api/spreadsheet/work-shifts/184
+Content-Type: application/json
+
+{
+	"type": "updateWorkShift",
+	"shiftId": "184",
+	"memberId": "RS-1000",
+	"startDatetime": "2025-07-01 09:00",
+	"endDatetime": "2025-07-01 18:00"
+}
+
+# DELETE http://localhost:3005/api/spreadsheet/work-shifts/185
 
 # POST http://localhost:3005/api/spreadsheet/work-reports
 # Content-Type: application/json
