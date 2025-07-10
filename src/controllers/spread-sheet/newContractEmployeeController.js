@@ -41,7 +41,7 @@ exports.createNewContractEmployee = async (req, res) => {
     );
 
     if (response.data.error) {
-      console.error("LarkBase保存エラー:", response.data);
+      console.error("GAS保存エラー:", response.data);
       res.status(400).json({
         message: "エラーが発生しました。再度登録してください。",
         error: response.data,
