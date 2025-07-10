@@ -1,30 +1,46 @@
-# GET http://localhost:3005/api/lark-data/target-home-worker?email=naoya.murata@nihon-sales.com
+# GET https://script.google.com/a/macros/nihon-sales.com/s/AKfycbziG8O1u1NAkyWYc4weRtge8if33ZGN3KbsCjQZQnvurY8GQYjCJcIJpnmwgB5BaLoatQ/exec?type=members&email=emi.ohashi@nihon-sales.com
 
-POST http://localhost:3005/api/spreadsheet/new-contract-employee
-Content-Type: application/json
+# POST https://script.google.com/a/macros/nihon-sales.com/s/AKfycbziG8O1u1NAkyWYc4weRtge8if33ZGN3KbsCjQZQnvurY8GQYjCJcIJpnmwgB5BaLoatQ/exec
+# Content-Type: application/json
 
-{
-	"name": "山田太郎",
-	"nameKana": "ヤマダタロウ",
-	"personalAddress": "yama@gmail.com",
-	"phoneNumber": "090-1234-5678",
-	"bankName": "三菱UFJ銀行",
-	"branchName": "本店",
-	"accountType": "普通",
-	"accountNumber": "1234567890",
-	"accountHolder": "山田太郎",
-	"birthday": "1990-01-01",
-	"address": "東京都千代田区永田町1-7-1",
-	"home": "東京都千代田区永田町1-7-1",
-	"earliestStartDate": "2025/05/01",
-	"estimatedWorkingHoursPerMonth": 160
-}
+# {
+# 	"type": "workReport",
+# 	"memberId": "RS-1000",
+# 	"startDatetime": "2025-07-01T09:00:00.000Z",
+# 	"endDatetime": "2025-07-01T18:00:00.000Z",
+# 	"restTime": 30,
+# 	"absenceTime": 60,
+# 	"workResult": "3\n1\n1",
+# 	"highlightsAndReflections": "名前がわかっているところを探してかけたりしたこと\nリストのことなどもあり架電数がかなり少なかったので来週以降架電数もっとあげられるように頑張ります！",
+# 	"tomorrowFocus": "関係構築・架電数・接続数",
+# 	"feedbackRequestPhone": "090-1234-5678"
+# }
+
+# POST http://localhost:3005/api/spreadsheet/new-contract-employee
+# Content-Type: application/json
+
+# {
+# 	"name": "山田太郎",
+# 	"nameKana": "ヤマダタロウ",
+# 	"personalAddress": "yama@gmail.com",
+# 	"phoneNumber": "090-1234-5678",
+# 	"bankName": "三菱UFJ銀行",
+# 	"branchName": "本店",
+# 	"accountType": "普通",
+# 	"accountNumber": "1234567890",
+# 	"accountHolder": "山田太郎",
+# 	"birthday": "1990-01-01",
+# 	"address": "東京都千代田区永田町1-7-1",
+# 	"home": "東京都千代田区永田町1-7-1",
+# 	"earliestStartDate": "2025/05/01",
+# 	"estimatedWorkingHoursPerMonth": 160
+# }
 
 # POST http://localhost:3005/api/spreadsheet/joining-company
 # Content-Type: application/json
 
 # {
-# 	"type": "joinedCompany",
+# 	"type": "newContractEmployee",
 # 	"name": "山田太郎",
 # 	"nameKana": "ヤマダ",
 # 	"personalAddress": "sample@example.com",
