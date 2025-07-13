@@ -19,6 +19,9 @@
     "start": "PORT=3005 NODE_ENV=dev node src/app.js",
     "dev": "nodemon src/app.js"
   },
+  "engines": {
+    "node": "20.19.2"
+  },
   "volta": {
     "node": "20.19.2"
   }

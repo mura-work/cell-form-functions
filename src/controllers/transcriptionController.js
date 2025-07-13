@@ -49,7 +49,9 @@ exports.transcribeAudioChunk = async (req, res) => {
     if (parseInt(chunkIndex) < parseInt(totalChunks) - 1) {
       return res.json({
         success: true,
-        message: `チャンク ${chunkIndex + 1}/${totalChunks} を受信しました`,
+        message: `チャンク ${
+          parseInt(chunkIndex) + 1
+        }/${totalChunks} を受信しました`,
       });
     }
 
