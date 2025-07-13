@@ -8,7 +8,7 @@
   ],
   "functions": {
     "api/**": {
-      "runtime": "20.19.2",
+      "runtime": "nodejs20.x",
       "maxDuration": 300
     }
   }

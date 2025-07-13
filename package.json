@@ -20,7 +20,7 @@
     "dev": "nodemon src/app.js"
   },
   "engines": {
-    "node": "20.19.2"
+    "node": "20.x"
   },
   "volta": {
     "node": "20.19.2"
