@@ -4,6 +4,7 @@ const joiningCompanyController = require("../controllers/spread-sheet/joiningCom
 const newContractEmployeeController = require("../controllers/spread-sheet/newContractEmployeeController");
 const workShiftController = require("../controllers/spread-sheet/workShiftController");
 const workReportController = require("../controllers/spread-sheet/workReportController");
+const contractEmployeesController = require("../controllers/spread-sheet/contractEmployeesController");
 
 // 契約開始時回答フォーム
 router.post("/joining-company", joiningCompanyController.createJoiningCompany);
@@ -23,5 +24,11 @@ router.put("/work-shifts/:shiftId", workShiftController.updateWorkShift);
 router.post("/work-reports", workReportController.createWorkReport);
 router.get("/work-reports", workReportController.getWorkReports);
 router.get("/work-report", workReportController.getWorkReportByEmail);
+
+// メンバーの取得
+router.get(
+  "/contract-employees",
+  contractEmployeesController.findContractEmployees
+);
 
 module.exports = router;

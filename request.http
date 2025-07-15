@@ -1,4 +1,4 @@
-# GET http://localhost:3005/api/spreadsheet/work-shifts
+# GET http://localhost:3005/api/spreadsheet/contract-employees?email=naoya.murata@nihon-sales.com
 # GET http://localhost:3005/api/spreadsheet/work-shift?type=workShift&email=rina.kobayashi@nihon-sales.com
 
 
@@ -26,21 +26,21 @@
 
 # DELETE http://localhost:3005/api/spreadsheet/work-shifts/185
 
-POST http://localhost:3005/api/spreadsheet/work-reports
-Content-Type: application/json
+# POST http://localhost:3005/api/spreadsheet/work-reports
+# Content-Type: application/json
 
-{
-	"type": "workReport",
-	"memberId": "RS-1000",
-	"workStartTime": "2025-07-01T09:00:00.000Z",
-	"workEndtime": "2025-07-01T18:00:00.000Z",
-	"restTime": 30,
-	"absenceTime": 60,
-	"workResult": "3\n1\n1",
-	"highlightsAndReflections": "名前がわかっているところを探してかけたりしたこと\nリストのことなどもあり架電数がかなり少なかったので来週以降架電数もっとあげられるように頑張ります！",
-	"tomorrowFocus": "関係構築・架電数・接続数",
-	"feedbackRequestPhone": "090-1234-5678"
-}
+# {
+# 	"type": "workReport",
+# 	"memberId": "RS-1000",
+# 	"workStartTime": "2025-07-01T09:00:00.000Z",
+# 	"workEndtime": "2025-07-01T18:00:00.000Z",
+# 	"restTime": 30,
+# 	"absenceTime": 60,
+# 	"workResult": "3\n1\n1",
+# 	"highlightsAndReflections": "名前がわかっているところを探してかけたりしたこと\nリストのことなどもあり架電数がかなり少なかったので来週以降架電数もっとあげられるように頑張ります！",
+# 	"tomorrowFocus": "関係構築・架電数・接続数",
+# 	"feedbackRequestPhone": "090-1234-5678"
+# }
 
 # POST http://localhost:3005/api/spreadsheet/new-contract-employee
 # Content-Type: application/json
