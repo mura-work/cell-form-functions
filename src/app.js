@@ -6,7 +6,13 @@ require("dotenv").config();
 
 const app = express();
 const corsOptions = {
-  origin: ["http://localhost:3003", "https://call-record-form-92dac.web.app"],
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:3003",
+    "https://call-record-form-92dac.web.app",
+    'https://boost-sales-assist.pages.dev',
+    'https://boost-sales-assist-staging.pages.dev',
+  ],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
