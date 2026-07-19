@@ -28,6 +28,7 @@ exports.createNewContractEmployee = async (req, res) => {
       birthday: params.birthday,
       address: params.address,
       home: params.home,
+      callingName: params.callingName,
       earliestStartDate: params.earliestStartDate,
       estimatedWorkingHoursPerMonth: params.estimatedWorkingHoursPerMonth,
     };
@@ -36,7 +37,7 @@ exports.createNewContractEmployee = async (req, res) => {
       process.env.REACT_APP_REMOTE_SALES_MANAGEMENT_ENDPOINT,
       {
         ...fieldMapping,
-      }
+      },
     );
 
     if (response.data.error) {
